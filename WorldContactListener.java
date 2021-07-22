@@ -17,19 +17,7 @@ public class WorldContactListener implements ContactListener {
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         switch (cDef){
-            case MyGame.PLAYER_HEAD_BIT | MyGame.BRICK_BIT:
-            case MyGame.PLAYER_HEAD_BIT | MyGame.COIN_BIT:
-                if(fixA.getFilterData().categoryBits == MyGame.PLAYER_HEAD_BIT)
-                    ((InteractiveTileObject) fixB.getUserData()).onHeadHit((Player) fixA.getUserData());
-                else
-                    ((InteractiveTileObject) fixA.getUserData()).onHeadHit((Player) fixB.getUserData());
-                break;
-            case MyGame.ENEMY_HEAD_BIT | MyGame.PLAYER_BIT:
-                if(fixA.getFilterData().categoryBits == MyGame.ENEMY_HEAD_BIT)
-                    ((Enemy)fixA.getUserData()).hitOnHead((Player) fixB.getUserData());
-                else
-                    ((Enemy)fixB.getUserData()).hitOnHead((Player) fixA.getUserData());
-                break;
+
             case MyGame.ENEMY_BIT | MyGame.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT)
                     ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
@@ -42,7 +30,7 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Player) fixB.getUserData()).hit((Enemy)fixA.getUserData());
                 break;
-            case MyGame.ENEMY_BIT | MyGame.ENEMY_BIT:
+            case MyGame.ENEMY_BIT:
                 ((Enemy)fixA.getUserData()).hitByEnemy((Enemy)fixB.getUserData());
                 ((Enemy)fixB.getUserData()).hitByEnemy((Enemy)fixA.getUserData());
                 break;
@@ -66,6 +54,12 @@ public class WorldContactListener implements ContactListener {
                     ((FireBall)fixB.getUserData()).setToDestroy();
                 break;
 
+            case MyGame.ENEMY_BIT | MyGame.FIREBALL_BIT:
+                if(fixA.getFilterData().categoryBits == MyGame.ENEMY_BIT)
+                    ((Enemy)fixA.getUserData()).hitByFire(((FireBall) fixB.getUserData()));
+                else
+                    ((Enemy)fixB.getUserData()).hitByFire(((FireBall) fixA.getUserData()));
+                break;
 
         }
     }

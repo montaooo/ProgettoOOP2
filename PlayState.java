@@ -51,57 +51,41 @@ public class PlayState implements Screen {
 
 
     public PlayState(MyGame game){
-        atlas = new TextureAtlas("Mario_and_Enemies.pack");
+
+        atlas = new TextureAtlas("player_zombie.pack");
 
         this.game = game;
-        //create cam used to follow mario through cam world
+
         gamecam = new OrthographicCamera();
 
-        //create a FitViewport to maintain virtual aspect ratio despite screen size
         gamePort = new FitViewport(MyGame.V_WIDTH / MyGame.PPM, MyGame.V_HEIGHT / MyGame.PPM, gamecam);
 
-        //create our game HUD for scores/timers/level info
         hud = new Hud(game.batch);
 
-        //Load our map and setup our map renderer
+
         maploader = new TmxMapLoader();
         map = maploader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1  / MyGame.PPM);
 
-        //initially set our gamcam to be centered correctly at the start of of map
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-        //create our Box2D world, setting no gravity in X, -10 gravity in Y, and allow bodies to sleep
         world = new World(new Vector2(0, -10), true);
-        //allows for debug lines of our box2d world.
+
         b2dr = new Box2DDebugRenderer();
 
         creator = new B2WorldCreator(this);
 
-        //create mario in our game world
         player = new Player(this);
 
         world.setContactListener(new WorldContactListener());
 
-        music = MyGame.manager.get("audio/music/mario_music.ogg", Music.class);
-        music.setLooping(true);
-        music.setVolume(0.3f);
-        music.play();
 
-        items = new Array<Item>();
-        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
-    }
 
-    public void spawnItem(ItemDef idef){
-        itemsToSpawn.add(idef);
     }
 
 
 
     public void handleSpawningItems(){
-        if(!itemsToSpawn.isEmpty()){
-            ItemDef idef = itemsToSpawn.poll();
-        }
 
         //qua ci possiamo mettere uno spawn di qualcosa
 
@@ -121,7 +105,7 @@ public class PlayState implements Screen {
     }
 
     public void handleInput(float dt){
-        //control our player using immediate impulses
+
         if(player.currentState != Player.State.DEAD) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.W))
                 player.jump();
@@ -138,34 +122,29 @@ public class PlayState implements Screen {
     }
 
     public void update(float dt){
-        //handle user input first
-        handleInput(dt);
-        handleSpawningItems();
 
-        //takes 1 step in the physics simulation(60 times per second)
+        handleInput(dt);
+
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
         for(Enemy enemy : creator.getEnemies()) {
             enemy.update(dt);
-            if(enemy.getX() < player.getX() + 224 / MyGame.PPM) {
+            if(enemy.getX() < player.getX() + 230 / MyGame.PPM) {
                 enemy.b2body.setActive(true);
             }
         }
 
-        for(Item item : items)
-            item.update(dt);
-
         hud.update(dt);
 
-        //attach our gamecam to our players.x coordinate
+        //setta la gamecam sul nostro player
+
         if(player.currentState != Player.State.DEAD) {
             gamecam.position.x = player.b2body.getPosition().x;
         }
 
-        //update our gamecam with correct coordinates after changes
+        //aggiorno la gamecam
         gamecam.update();
-        //tell our renderer to draw only what our camera can see in our game world.
         renderer.setView(gamecam);
 
     }
@@ -173,17 +152,15 @@ public class PlayState implements Screen {
 
     @Override
     public void render(float delta) {
-        //separate our update logic from render
+
         update(delta);
 
-        //Clear the game screen with Black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //render our game map
+        //renderizza il mondo di gioco
         renderer.render();
 
-        //renderer our Box2DDebugLines
         b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -191,11 +168,10 @@ public class PlayState implements Screen {
         player.draw(game.batch);
         for (Enemy enemy : creator.getEnemies())
             enemy.draw(game.batch);
-        for (Item item : items)
-            item.draw(game.batch);
+
         game.batch.end();
 
-        //Set our batch to now draw what the Hud camera sees.
+        //disegna quello che la cam di hud vede
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
 
@@ -215,7 +191,7 @@ public class PlayState implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        //updated our game viewport
+
         gamePort.update(width,height);
 
     }
@@ -244,7 +220,6 @@ public class PlayState implements Screen {
 
     @Override
     public void dispose() {
-        //dispose of all our opened resources
         map.dispose();
         renderer.dispose();
         world.dispose();

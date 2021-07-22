@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -23,8 +22,8 @@ public class FireBall extends Sprite {
     boolean destroyed;
     boolean setToDestroy;
     boolean fireRight;
-
     Body b2body;
+
     public FireBall(PlayState screen, float x, float y, boolean fireRight){
         this.fireRight = fireRight;
         this.screen = screen;
@@ -51,8 +50,6 @@ public class FireBall extends Sprite {
         shape.setRadius(3 / MyGame.PPM);
         fdef.filter.categoryBits = MyGame.FIREBALL_BIT;
         fdef.filter.maskBits = MyGame.GROUND_BIT |
-                MyGame.COIN_BIT |
-                MyGame.BRICK_BIT |
                 MyGame.ENEMY_BIT |
                 MyGame.OBJECT_BIT;
 

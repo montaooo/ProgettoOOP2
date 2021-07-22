@@ -23,8 +23,9 @@ public abstract class Enemy extends Sprite {
 
     protected abstract void defineEnemy();
     public abstract void update(float dt);
-    public abstract void hitOnHead(Player mario);
+    //public abstract void hitOnHead(Player mario);
     public abstract void hitByEnemy(Enemy enemy);
+    public abstract void hitByFire(FireBall fireball);
 
     public void reverseVelocity(boolean x, boolean y){
         if(x)

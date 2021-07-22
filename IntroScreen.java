@@ -1,75 +1,52 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ai.msg.Telegram;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.MyGame;
 
-import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
+public class IntroScreen extends State {
 
-public class IntroScreen implements Screen{
+    public MyGame game;
 
-    private MyGame game;
-    private Texture back;
-    private Texture btn;
+    private Texture background;
+    private Texture playBtn;
 
-    public IntroScreen(MyGame game){
-
-        this.game = game;
-
-        back = new Texture("sfondo4.png");
-        btn = new Texture("playbtn.png");
+    protected IntroScreen(GameStateManager gsm) {
+            super(gsm);
+            cam.setToOrtho(false, MyGame.V_WIDTH / 2, MyGame.V_HEIGHT / 2);
+            background = new Texture("bg.png");
+            playBtn = new Texture("playbtn.png");
 
     }
-
-
-    public void update(){
-
-
-
-    }
-
-
 
 
     @Override
-    public void show() {
-
+    public void handleInput() {
+        if(Gdx.input.justTouched()){
+           // gsm.set(new PlayState(gsm));
+        }
     }
 
     @Override
-    public void render(float delta) {
-
+    public void update(float dt) {
+        handleInput();
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
+    public void render(SpriteBatch sb) {
+        sb.setProjectionMatrix(cam.combined);
+        sb.begin();
+        sb.draw(background, 0,0);
+        sb.draw(playBtn, cam.position.x - playBtn.getWidth() / 2, cam.position.y);
+        sb.end();
     }
 
     @Override
     public void dispose() {
-
+        background.dispose();
+        playBtn.dispose();
+        System.out.println("Menu State Disposed");
     }
 }
