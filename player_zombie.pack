@@ -1,0 +1,26 @@
+
+player_zombie.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+player
+  rotate: false
+  xy: 1, 259
+  size: 512, 192
+  orig: 512, 192
+  offset: 0, 0
+  index: -1
+zombie
+  rotate: false
+  xy: 1, 1
+  size: 288, 256
+  orig: 288, 256
+  offset: 0, 0
+  index: -1
+fireball
+  rotate: false
+  xy: 515, 443
+  size: 32, 8
+  orig: 32, 8
+  offset: 0, 0
+  index: -1
