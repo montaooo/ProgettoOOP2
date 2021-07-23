@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 
 
 public class Player extends Sprite {
-    public enum State {JUMPING, STANDING, RUNNING, DEAD };
+    public enum State {JUMPING, STANDING, RUNNING, FALLING, DEAD };
     public State currentState;
     public State previousState;
 
@@ -48,13 +48,11 @@ public class Player extends Sprite {
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
-
         /*
+
         for(int i = 1; i < 4; i++)
             frames.add(new TextureRegion(screen.getAtlas().findRegion("player"), i * 203, 18, 46, 48));
         playerRun = new Animation(0.1f, frames);
-
-
 
          */
 
@@ -102,10 +100,10 @@ public class Player extends Sprite {
     public TextureRegion getFramePlayer(float dt){
 
         currentState = getState();
-
         TextureRegion region;
 
         switch(currentState){
+            case FALLING:
             case DEAD:
                 region = playerDead;
                 break;
@@ -133,28 +131,26 @@ public class Player extends Sprite {
         }
 
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
-
         previousState = currentState;
-
         return region;
 
     }
-
-
 
     public State getState(){
 
         if(playerIsDead)
             return State.DEAD;
-
         else if((b2body.getLinearVelocity().y > 0 && currentState == State.JUMPING) || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING))
             return State.JUMPING;
-
         else if(b2body.getLinearVelocity().x != 0)
             return State.RUNNING;
+        else if(b2body.getLinearVelocity().y < 0)
+            return State.FALLING;
         else
             return State.STANDING;
+
     }
+
 
     public void die() {
 
@@ -181,7 +177,6 @@ public class Player extends Sprite {
         return stateTimer;
     }
 
-
     public void jump(){
         if (currentState != State.JUMPING ) {
             b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
@@ -189,8 +184,13 @@ public class Player extends Sprite {
         }
     }
 
-
     public void hit(Enemy enemy){
+
+        die();
+
+    }
+
+    public void fall(World world){
 
         die();
 
@@ -232,6 +232,7 @@ public class Player extends Sprite {
 
 
     public void definePlayer(){
+
         BodyDef bdef = new BodyDef();
         bdef.position.set(32 / MyGame.PPM, 32 / MyGame.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;

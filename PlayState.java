@@ -3,7 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,42 +12,29 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Hud;
-import java.util.PriorityQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayState implements Screen {
-    //Reference to our Game, used to set Screens
+
     private MyGame game;
     private TextureAtlas atlas;
     public static boolean alreadyDestroyed = false;
 
-    //basic playscreen variables
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Hud hud;
 
-    //Tiled map variables
     private TmxMapLoader maploader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
-    //Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
 
-    //sprites
     private Player player;
-
-    private Music music;
-
-    private Array<Item> items;
-    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
-
+    //private Music music;
 
     public PlayState(MyGame game){
 
@@ -82,17 +68,6 @@ public class PlayState implements Screen {
 
 
     }
-
-
-
-    public void handleSpawningItems(){
-
-        //qua ci possiamo mettere uno spawn di qualcosa
-
-    }
-
-
-
 
     public TextureAtlas getAtlas(){
         return atlas;
@@ -228,4 +203,5 @@ public class PlayState implements Screen {
     }
 
     public Hud getHud(){ return hud; }
+
 }

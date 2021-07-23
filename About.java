@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,15 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.w3c.dom.*;
 
-
-public class GameOverScreen implements Screen {
+public class About implements Screen {
 
     private Viewport viewport;
     private Stage stage;
     private Game game;
 
-    public GameOverScreen(Game game){
+    public About(Game game){
 
         this.game = game;
         viewport = new FitViewport(MyGame.V_WIDTH, MyGame.V_HEIGHT, new OrthographicCamera());
@@ -34,21 +33,14 @@ public class GameOverScreen implements Screen {
         table.center();
         table.setFillParent(true);
 
-        Label gameOverLabel = new Label("GAME OVER", font);
-        Label playAgainLabel = new Label("PRESS ENTER TO PLAY AGAIN", font);
-        Label returnMenuLabel = new Label("PRESS BACK TO RETURN MENU", font);
+        Label returnLabel = new Label("PRESS BACK TO RETURN", font);
 
-        table.add(gameOverLabel).expandX();
-        table.row();
-        table.add(playAgainLabel).expandX().padTop(10f);
-        table.row();
-        table.add(returnMenuLabel).expandX();
+        table.add(returnLabel).expandX();
 
         stage.addActor(table);
 
-        gameOverLabel.setVisible(true);
-        playAgainLabel.setVisible(true);
-        returnMenuLabel.setVisible(true);
+        //aboutLabel.setVisible(true);
+        returnLabel.setVisible(true);
 
     }
 
@@ -59,29 +51,14 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-        if(Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-            game.setScreen(new PlayState((MyGame) game));
-            dispose();
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
-
+        if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
             game.setScreen(new IntroScreen((MyGame) game));
             dispose();
-
         }
 
-        /*
-        if(Gdx.input.justTouched()) {
-            game.setScreen(new PlayState((MyGame) game));
-            dispose();
-        }
-
-         */
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
-
     }
 
     @Override
@@ -109,4 +86,3 @@ public class GameOverScreen implements Screen {
         stage.dispose();
     }
 }
-

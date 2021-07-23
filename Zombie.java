@@ -1,4 +1,3 @@
-
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -23,7 +22,6 @@ public class Zombie extends Enemy {
 
         super(screen, x, y);
         frames = new Array<TextureRegion>();
-
 
         for(int i = 1; i < 4; i++)
             frames.add(new TextureRegion(screen.getAtlas().findRegion("zombie"), i - 8, 75, 40, 55));
@@ -67,7 +65,6 @@ public class Zombie extends Enemy {
 
         switch (currentState){
             case DEAD:
-
             case WALKING:
             default:
                 region = (TextureRegion) walkAnimation.getKeyFrame(stateTime, true);

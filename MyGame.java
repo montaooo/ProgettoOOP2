@@ -41,7 +41,7 @@ public class MyGame extends Game {
 
 		manager.finishLoading();
 
-		setScreen(new PlayState(this));
+		setScreen(new IntroScreen(this));
 
 	}
 

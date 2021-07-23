@@ -17,6 +17,7 @@ public class B2WorldCreator {
     private Array<Zombie> zombie;
 
     public B2WorldCreator(PlayState screen){
+
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
@@ -25,6 +26,7 @@ public class B2WorldCreator {
         Body body;
 
         //crea il ground
+
         for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -70,4 +72,5 @@ public class B2WorldCreator {
         enemies.addAll(zombie);
         return enemies;
     }
+
 }
