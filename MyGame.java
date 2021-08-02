@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -30,21 +31,26 @@ public class MyGame extends Game {
 
 	public SpriteBatch batch;
 	public GameStateManager gsm;
-
+	private static Music music;
 	public static AssetManager manager;
+
 
 	@Override
 	public void create () {
 
 		batch = new SpriteBatch();
 		manager = new AssetManager();
-
+		music = Gdx.audio.newMusic(Gdx.files.internal("Ketsa - Loading-time.mp3"));
+		music.play();
 		manager.finishLoading();
 
 		setScreen(new IntroScreen(this));
 
 	}
 
+	public static Music getMusic() {
+		return music;
+	}
 
 	@Override
 	public void dispose() {
